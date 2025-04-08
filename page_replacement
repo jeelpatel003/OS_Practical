@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Replacement Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .button-group {
+            text-align: center;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-group button:hover {
+            background-color: #ddd;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .results th, .results td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .results th {
+            background-color: #f0f0f0;
+        }
+        .hit {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page Replacement Simulator</h1>
+    <div class="container">
+        <div class="input-group">
+            <label for="page-sequence">Enter Page Reference Sequence (comma-separated):</label>
+            <input type="text" id="page-sequence" placeholder="e.g., 7, 0, 1, 2, 0, 3, 0, 4">
+        </div>
+        <div class="input-group">
+            <label for="frame-size">Enter Number of Frames:</label>
+            <input type="number" id="frame-size" placeholder="e.g., 3">
+        </div>
+        <div class="button-group">
+            <button onclick="simulateFIFO()">Simulate FIFO</button>
+            <button onclick="simulateLRU()">Simulate LRU</button>
+            <button onclick="simulateOptimal()">Simulate Optimal</button>
+        </div>
+        <div class="results">
+            <h2>Results</h2>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Page</th>
+                        <th>Frames</th>
+                        <th>Hit/Miss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function clearResults() {
+            const tableBody = document.querySelector('#results-table tbody');
+            tableBody.innerHTML = '';
+        }
+
+        function addResult(step, page, frames, isHit) {
+            const tableBody = document.querySelector('#results-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${step}</td>
+                <td>${page}</td>
+                <td>${frames.join(', ')}</td>
+                <td class="${isHit ? 'hit' : ''}">${isHit ? 'Hit' : 'Miss'}</td>
+            `;
+            tableBody.appendChild(row);
+        }
+
+        function simulateFIFO() {
+            clearResults();
+            const sequence = document.getElementById('page-sequence').value.split(',').map(Number);
+            const frameSize = parseInt(document.getElementById('frame-size').value);
+            const frames = [];
+            let step = 0;
+            sequence.forEach(page => {
+                step++;
+                if (!frames.includes(page)) {
+                    if (frames.length >= frameSize) {
+                        frames.shift();
+                    }
+                    frames.push(page);
+                    addResult(step, page, frames, false);
+                } else {
+                    addResult(step, page, frames, true);
+                }
+            });
+        }
+
+        function simulateLRU() {
+            clearResults();
+            const sequence = document.getElementById('page-sequence').value.split(',').map(Number);
+            const frameSize = parseInt(document.getElementById('frame-size').value);
+            const frames = [];
+            let step = 0;
+            sequence.forEach(page => {
+                step++;
+                if (!frames.includes(page)) {
+                    if (frames.length >= frameSize) {
+                        frames.shift();
+                    }
+                    frames.push(page);
+                    addResult(step, page, frames, false);
+                } else {
+                    frames.splice(frames.indexOf(page), 1);
+                    frames.push(page);
+                    addResult(step, page, frames, true);
+                }
+            });
+        }
+
+        function simulateOptimal() {
+            clearResults();
+            const sequence = document.getElementById('page-sequence').value.split(',').map(Number);
+            const frameSize = parseInt(document.getElementById('frame-size').value);
+            const frames = [];
+            let step = 0;
+            sequence.forEach((page, index) => {
+                step++;
+                if (!frames.includes(page)) {
+                    if (frames.length >= frameSize) {
+                        const futureIndices = frames.map(f => sequence.slice(index + 1).indexOf(f));
+                        const replaceIndex = futureIndices.indexOf(-1) !== -1 ? futureIndices.indexOf(-1) : futureIndices.lastIndexOf(Math.max(...futureIndices));
+                        frames.splice(replaceIndex, 1);
+                    }
+                    frames.push(page);
+                    addResult(step, page, frames, false);
+                } else {
+                    addResult(step, page, frames, true);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
