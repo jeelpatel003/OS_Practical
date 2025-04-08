@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Algorithm Simulators</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #d7ecfa; /* pastel blue background */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #f9d9f9; /* soft pastel lavender-pink */
+            color: #34495e;
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 30px 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.8em;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            margin: 60px auto;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .option {
+            background-color: #ffffff;
+            border: 2px solid #bde0fe;
+            border-radius: 25px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .option:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .option h2 {
+            font-size: 1.9em;
+            color: #2f4f4f;
+        }
+
+        .option p {
+            color: #555;
+            font-size: 1.05em;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            margin-top: 25px;
+        }
+
+        .button-group button {
+            padding: 12px 28px;
+            margin: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #98ddca; /* pastel mint */
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button-group button:hover {
+            background-color: #84d1bd;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .option {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Algorithm Simulator</h1>
+    </header>
+
+    <div class="container">
+        <div class="option">
+            <h2>Page Replacement Simulator</h2>
+            <p>Simulate page replacement algorithms like FIFO, LRU, and Optimal.</p>
+            <div class="button-group">
+                <button onclick="window.location.href='page_replacement.html'">Explore Page Replacement</button>
+            </div>
+        </div>
+
+        <div class="option">
+            <h2>Scheduling Calculator</h2>
+            <p>Simulate scheduling algorithms like FCFS, SJF, and Round Robin.</p>
+            <div class="button-group">
+                <button onclick="window.location.href='scheduling_algorithm.html'">Explore Scheduling</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
